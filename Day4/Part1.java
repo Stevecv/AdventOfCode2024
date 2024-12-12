@@ -11,13 +11,8 @@ public class Day4 {
             "SAXAMASAAA\n" +
             "MAMMMXMMMM\n" +
             "MXMXAXMASX";
-    public static ArrayList<Character> debugChart = new ArrayList<>();
 
     public static void main(String[] args) {
-        for (int i = 0; i < code.replace("\n", "").length(); i++) {
-            debugChart.add('.');
-        }
-
         int matches = 0;
         int i = 0;
         for (String line: code.split("\n")) {
@@ -39,32 +34,14 @@ public class Day4 {
                 corrects.add(checkDirection(j, i, 1, -1, lineWidth, 'M', 1));
                 corrects.add(checkDirection(j, i, -1, -1, lineWidth, 'M', 1));
 
-                int counter = 0;
                 for (Boolean correct: corrects) {
                     if (correct) {
                         matches++;
-                        System.out.println(counter);
                     }
-
-                    counter++;
                 }
-                System.out.println("-----------------------------------------");
                 j++;
             }
             i++;
-        }
-
-        int count = 0;
-        String line = "";
-        for (Character c: debugChart) {
-            line += c;
-
-            if (count == 10) {
-                System.out.println(line);
-                line = "";
-                count = 0;
-            }
-            count++;
         }
 
         System.out.println(matches);
@@ -75,23 +52,12 @@ public class Day4 {
         return code.replace("\n", "").toCharArray()[i];
     }
 
-    public static void setLetter(int x, int y, int length, char letter) {
-        int i = (y * length) + x;
-        if (debugChart.get(i) == '.') {
-            debugChart.set(i, letter);
-        }
-    }
-
     public static boolean checkDirection(int x, int y, int vX, int vY, int length, char checkFor, int depth) {
-        if (depth == 1) {
-            System.out.println("");
-        }
         vX = vX*depth;
         vY = vY*depth;
 
         int checking = ((y+vY) * length) + (x+vX);
-        if (x+vX >= length-1 || checking >= code.replace("\n", "").length() || checking < 0 || x+vX < 0) {
-            System.out.println("Leave early: " + checking + ", " + vX + ", " + vY + " (Started at: " + x + "," + y + ")");
+        if (x+vX >= length || checking >= code.replace("\n", "").length() || checking < 0 || x+vX < 0) {
             return false;
         }
         boolean correct = false;
@@ -100,7 +66,6 @@ public class Day4 {
             correct = true;
         }
 
-        System.out.println(getLetter(x+vX, y+vY, length) + ": " + correct);
         switch (checkFor) {
             case 'X' -> checkFor = 'M';
             case 'M' -> checkFor = 'A';
@@ -108,18 +73,8 @@ public class Day4 {
             case 'S' -> checkFor = ' ';
         }
 
-        if (!correct) {
-            System.out.println("Leave");
-        }
-        if (checkFor == ' ' || !correct) {
-            if (correct) {
-                System.out.println("Success");
 
-                setLetter(x, y, length, 'X');
-                setLetter(x+((vX/depth)*2), y+((vY/depth)*2), length, 'M');
-                setLetter(x+((vX/depth)*3), y+((vY/depth)*3), length, 'A');
-                setLetter(x+((vX/depth)*4), y+((vY/depth)*4), length, 'S');
-            }
+        if (checkFor == ' ' || !correct) {
             return correct;
         }
 

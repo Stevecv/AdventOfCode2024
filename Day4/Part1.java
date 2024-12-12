@@ -11,8 +11,13 @@ public class Day4 {
             "SAXAMASAAA\n" +
             "MAMMMXMMMM\n" +
             "MXMXAXMASX";
+    public static ArrayList<Character> debugChart = new ArrayList<>();
 
     public static void main(String[] args) {
+        for (int i = 0; i < code.replace("\n", "").length(); i++) {
+            debugChart.add('.');
+        }
+
         int matches = 0;
         int i = 0;
         for (String line: code.split("\n")) {
@@ -57,6 +62,13 @@ public class Day4 {
         return code.replace("\n", "").toCharArray()[i];
     }
 
+    public static void setLetter(int x, int y, int length, char letter) {
+        int i = (y * length) + x;
+        if (debugChart.get(i) == '.') {
+            debugChart.set(i, letter);
+        }
+    }
+
     public static boolean checkDirection(int x, int y, int vX, int vY, int length, char checkFor, int depth) {
         if (depth == 1) {
             System.out.println("");
@@ -89,6 +101,11 @@ public class Day4 {
         if (checkFor == ' ' || !correct) {
             if (correct) {
                 System.out.println("Success");
+
+                setLetter(x, y, length, 'X');
+                setLetter(x+((vX/depth)*2), y+((vY/depth)*2), length, 'M');
+                setLetter(x+((vX/depth)*3), y+((vY/depth)*3), length, 'A');
+                setLetter(x+((vX/depth)*4), y+((vY/depth)*4), length, 'S');
             }
             return correct;
         }

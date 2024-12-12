@@ -54,6 +54,19 @@ public class Day4 {
             i++;
         }
 
+        int count = 0;
+        String line = "";
+        for (Character c: debugChart) {
+            line += c;
+
+            if (count == 10) {
+                System.out.println(line);
+                line = "";
+                count = 0;
+            }
+            count++;
+        }
+
         System.out.println(matches);
     }
 
